@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import IItem from "src/interfaces/IItem";
 
-const itemSchema = new Schema<IItem>({
+const itemSchema: Schema = new Schema<IItem>({
   name: { type: String, required: true },
   description: String,
 });

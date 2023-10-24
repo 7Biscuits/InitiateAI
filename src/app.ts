@@ -4,18 +4,21 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import mongoose, { ConnectOptions } from "mongoose";
 import ItemResolver from "./graphql/resolvers/ItemResolver";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 async function startServer() {
   const app = express();
 
-  await mongoose.connect("mongodb://localhost:27017/Graphql-example-db", {
+  await mongoose.connect(`${process.env.MONGO_URI}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as ConnectOptions);
 
   const schema = await buildSchema({
     resolvers: [ItemResolver],
-    // emitSchemaFile: true
+    emitSchemaFile: true
   });
 
   const server = new ApolloServer({ schema });

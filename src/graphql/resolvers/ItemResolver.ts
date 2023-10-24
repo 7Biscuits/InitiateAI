@@ -64,7 +64,6 @@ class ItemResolver {
   @Mutation(() => String)
   async deleteAllItems(): Promise<string> {
     try {
-      // Delete all items from the database
       await Item.deleteMany({});
       return "All the items have been delete"
     } catch (error) {
