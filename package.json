@@ -1,21 +1,21 @@
 {
-  "name": "graphql-crud-api",
+  "name": "mentalmateai-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "author": "Rudransh",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "dependencies": {
-    "@typegoose/typegoose": "^11.6.0",
     "apollo-server-express": "^3.12.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "global": "^4.4.0",
     "graphql": "^15.3.0",
-    "mongoose": "^7.6.3",
+    "langchain": "^0.0.171",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },

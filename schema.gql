@@ -3,20 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type ItemType {
-  _id: ID!
-  description: String
+type Message {
+  message: String!
   name: String!
-}
-
-type Mutation {
-  createItem(description: String, name: String!): ItemType!
-  deleteAllItems: String!
-  deleteItem(_id: String!): ItemType
-  updateItem(_id: String!, description: String, name: String): ItemType
+  reply: String!
 }
 
 type Query {
-  getAllItems: [ItemType!]!
-  getItem(_id: String!): ItemType
+  displayMessage(message: String!, name: String!): Message!
 }
