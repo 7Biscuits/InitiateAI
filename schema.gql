@@ -3,12 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Message {
-  message: String!
-  name: String!
-  reply: String!
+type IdeaType {
+  email: String!
+  idea: String!
+  name: String
 }
 
 type Query {
-  displayMessage(message: String!, name: String!): Message!
+  displayMessage(email: String!, idea: String!, name: String!): IdeaType!
 }

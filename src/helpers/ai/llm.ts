@@ -1,5 +1,5 @@
 import { OpenAI } from "langchain/llms/openai";
-import { prompt } from "./prompt";
+import { prompt } from "./prompts/prompt";
 import { configDotenv } from "dotenv";
 
 configDotenv();
