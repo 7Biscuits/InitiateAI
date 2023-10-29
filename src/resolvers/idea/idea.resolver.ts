@@ -4,7 +4,7 @@ import { IdeaType } from "./idea.types";
 @Resolver()
 export class IdeaResolver {
   @Query(() => IdeaType)
-  async displayMessage(
+  async getIdea(
     @Arg("email") email: string,
     @Arg("name") name: string,
     @Arg("idea") idea: string

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
+import { UserResolver } from "./resolvers/user/user.resolver";
 import { IdeaResolver } from "./resolvers/idea/idea.resolver";
 import { router } from "./router";
 import { configDotenv } from "dotenv";
@@ -44,7 +45,7 @@ async function startServer() {
   app.use(express.json());
 
   const schema: any = await buildSchema({
-    resolvers: [IdeaResolver],
+    resolvers: [UserResolver, IdeaResolver],
     emitSchemaFile: true,
   });
 

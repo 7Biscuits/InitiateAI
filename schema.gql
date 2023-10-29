@@ -9,6 +9,21 @@ type IdeaType {
   name: String
 }
 
+type Mutation {
+  deleteUserByEmail(email: String!): String!
+  deleteUserById(_id: String!): String!
+}
+
 type Query {
-  displayMessage(email: String!, idea: String!, name: String!): IdeaType!
+  getAllUsers: [UserType!]!
+  getIdea(email: String!, idea: String!, name: String!): IdeaType!
+  getUserByEmail(email: String!): UserType
+  getUserById(_id: String!): UserType
+}
+
+type UserType {
+  _id: ID!
+  email: String!
+  googleId: String!
+  name: String!
 }
