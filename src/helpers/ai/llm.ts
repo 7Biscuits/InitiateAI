@@ -1,6 +1,6 @@
 import { OpenAI } from "langchain/llms/openai";
-import { feedbackPrompt } from "./prompts/feedback";
 import { configDotenv } from "dotenv";
+import { PromptTemplate } from "langchain/prompts";
 
 configDotenv();
 
@@ -9,11 +9,11 @@ const llm: OpenAI = new OpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function execute(idea: string, name: string): Promise<string> {
-  const userIdea: string = await feedbackPrompt.format({
+export async function execute(idea: string, name: string, prompt: PromptTemplate): Promise<string> {
+  const input: string = await prompt.format({
     idea: idea,
     name: name,
   });
-  const feedback: string = await llm.call(userIdea);
-  return feedback;
+  const resp: string = await llm.call(input);
+  return resp;
 }

@@ -7,16 +7,18 @@ type IdeaType {
   email: String!
   idea: String!
   name: String
+  response: String!
 }
 
 type Mutation {
+  createIdea(email: String!, idea: String!, name: String!): IdeaType!
   deleteUserByEmail(email: String!): String!
   deleteUserById(_id: String!): String!
 }
 
 type Query {
   getAllUsers: [UserType!]!
-  getIdea(email: String!, idea: String!, name: String!): IdeaType!
+  getIdeaById(_id: String!): IdeaType!
   getUserByEmail(email: String!): UserType
   getUserById(_id: String!): UserType
 }

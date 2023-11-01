@@ -6,7 +6,7 @@ export async function handleCallback(
   email: string,
   id: string,
   name: string
-) {
+): Promise<void> {
   const user = User.findOne({ email: email });
   if (await user) {
     res.redirect("/auth/google/success");
