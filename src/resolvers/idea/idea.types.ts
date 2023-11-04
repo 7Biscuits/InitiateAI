@@ -1,7 +1,19 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, ID } from "type-graphql";
+
+@ObjectType()
+export class ArgumentationType {
+  @Field({ nullable: true })
+  question: string;
+
+  @Field({ nullable: true })
+  answer: number;
+}
 
 @ObjectType()
 export class IdeaType {
+  @Field(() => ID)
+  _id: string;
+
   @Field()
   email: string;
 
@@ -12,5 +24,8 @@ export class IdeaType {
   idea: string;
 
   @Field()
-  response: string;
+  feedback: string;
+
+  @Field(() => ArgumentationType, { nullable: true })
+  argumentation: ArgumentationType;
 }

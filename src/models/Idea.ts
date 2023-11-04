@@ -6,10 +6,6 @@ const IdeaModel: Schema = new Schema<IIdea>({
     type: String,
     required: true,
   },
-  name: {
-    type: String,
-    reqired: true,
-  },
   idea: {
     type: String,
     required: true,
@@ -20,6 +16,7 @@ const IdeaModel: Schema = new Schema<IIdea>({
   },
   argumentation: {
     type: Object,
+    required: false,
     default: {},
   },
 });

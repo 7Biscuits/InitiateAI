@@ -22,21 +22,20 @@ export class IdeaResolver {
     @Arg("email") email: string,
     @Arg("idea") idea: string
   ): Promise<IdeaType> {
-    const name: any = await User.findOne({ email: email });
-    const feedback: string = await execute(idea, name, feedbackPrompt);
+    const user: any = await User.findOne({ email: email });
+    const feedback: string = await execute(idea, user.name, feedbackPrompt);
     const IdeaObject: any = new Idea({
       email: email,
-      name: name,
+      name: user.name,
       idea: idea,
-      response: feedback,
+      feedback: feedback,
     });
-    IdeaObject.save();
-    return IdeaObject;
+    return await IdeaObject.save();
   }
 
   @Mutation(() => String)
   async deleteIdea(@Arg("_id") _id: string): Promise<String> {
-    const idea: any = Idea.findById(_id);
+    const idea: any = await Idea.findById(_id);
     if (!idea) return `Idea with id ${_id} was not found.`;
     Idea.deleteOne(idea);
     return "Idea deleted successfully";
@@ -44,9 +43,9 @@ export class IdeaResolver {
 
   @Mutation(() => String)
   async deleteIdeas(@Arg("email") email: string): Promise<String> {
-    const ideas: any = Idea.find({ email: email });
+    const ideas: any = await Idea.find({ email: email });
     if (!ideas) return "No ideas to delete.";
-    Idea.deleteMany(ideas);
+    await Idea.deleteMany({ email: email });
     return "All ideas deleted.";
   }
 }

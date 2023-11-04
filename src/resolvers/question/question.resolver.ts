@@ -1,4 +1,48 @@
-import { Resolver, Query, Arg } from "type-graphql";
+import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { QuestionType } from "./question.types";
+import { questionPrompt } from "../../helpers/ai/prompts/question";
+import { checkAnswerPrompt } from "../../helpers/ai/prompts/answer";
 import Idea from "../../models/Idea";
-import { IdeaResolver } from "../idea/idea.resolver";
+import User from "../../models/User";
+import { execute, checkAnswer } from "../../helpers/ai/llm";
+
+@Resolver()
+export class QuestionResolver {
+  @Query(() => QuestionType)
+  async getQuestion(@Arg("idea_id") _id: string): Promise<QuestionType> {
+    const idea: any = await Idea.findById(_id);
+    const user: any = await User.findOne({ email: idea.email });
+    const question: string = await execute(
+      idea.idea,
+      user.name,
+      questionPrompt
+    );
+    idea.argumentation.question = question;
+    idea.save();
+    return {
+      question: question,
+      idea: idea.idea,
+      name: user.name
+    }
+  }
+
+  @Mutation(() => QuestionType)
+  async answerQuestion(
+    @Arg("idea_id") _id: string,
+    @Arg("answer") answer: string
+  ): Promise<QuestionType> {
+    const idea: any = await Idea.findById(_id);
+    const user: any = await User.findOne({ email: idea.email });
+    const question: string = await idea.argumentation.question;
+    const rating: string = await checkAnswer(idea.idea, question, answer, user.name, checkAnswerPrompt);
+    idea.argumentation.answer = answer;
+    idea.argumentation.rating = rating;
+    return {
+      idea: idea.idea,
+      question: question,
+      name: user.name,
+      rating: rating,
+      answer: answer,
+    };
+  }
+}

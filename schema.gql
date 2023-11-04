@@ -3,24 +3,44 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type ArgumentationType {
+  answer: Float
+  question: String
+}
+
 type IdeaType {
+  _id: ID!
+  argumentation: ArgumentationType
   email: String!
+  feedback: String!
   idea: String!
   name: String
-  response: String!
 }
 
 type Mutation {
-  createIdea(email: String!, idea: String!, name: String!): IdeaType!
+  answerQuestion(answer: String!, idea_id: String!): QuestionType!
+  createIdea(email: String!, idea: String!): IdeaType!
+  deleteIdea(_id: String!): String!
+  deleteIdeas(email: String!): String!
   deleteUserByEmail(email: String!): String!
   deleteUserById(_id: String!): String!
 }
 
 type Query {
+  getAllIdeas(email: String!): [IdeaType!]!
   getAllUsers: [UserType!]!
-  getIdeaById(_id: String!): IdeaType!
+  getIdea(_id: String!): IdeaType
+  getQuestion(idea_id: String!): QuestionType!
   getUserByEmail(email: String!): UserType
   getUserById(_id: String!): UserType
+}
+
+type QuestionType {
+  answer: String!
+  idea: String!
+  name: String!
+  question: String!
+  rating: String!
 }
 
 type UserType {

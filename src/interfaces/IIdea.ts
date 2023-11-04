@@ -3,8 +3,5 @@ export interface IIdea {
   name: string;
   idea: string;
   feedback: string;
-  argumentation: {
-    question: string;
-    answer: string;
-  };
+  argumentation?: object;
 }

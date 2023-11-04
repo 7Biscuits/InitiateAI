@@ -9,6 +9,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import { UserResolver } from "./resolvers/user/user.resolver";
 import { IdeaResolver } from "./resolvers/idea/idea.resolver";
+import { QuestionResolver } from "./resolvers/question/question.resolver";
 import { router } from "./router";
 import { configDotenv } from "dotenv";
 
@@ -45,7 +46,7 @@ async function startServer() {
   app.use(express.json());
 
   const schema: any = await buildSchema({
-    resolvers: [UserResolver, IdeaResolver],
+    resolvers: [UserResolver, IdeaResolver, QuestionResolver],
     emitSchemaFile: true,
   });
 
