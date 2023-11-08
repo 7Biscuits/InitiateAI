@@ -9,17 +9,18 @@ const llm: OpenAI = new OpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function execute(
+export async function generateFQ(
+  problem: string,
   idea: string,
   name: string,
   prompt: PromptTemplate
 ): Promise<string> {
   const input: string = await prompt.format({
+    problem: problem,
     idea: idea,
     name: name,
   });
-  const feedback: string = await llm.call(input);
-  return feedback;
+  return await llm.call(input);
 }
 
 export async function checkAnswer(
@@ -36,6 +37,20 @@ export async function checkAnswer(
     name: name,
   });
 
-  const rating: string = await llm.call(input);
-  return rating;
+  return await llm.call(input);
+}
+
+export async function generateRoadmap(
+  idea: string,
+  answer: string,
+  name: string,
+  prompt: PromptTemplate
+): Promise<string> {
+  const input: string = await prompt.format({
+    idea: idea,
+    answer: answer,
+    name: name,
+  });
+
+  return await llm.call(input);
 }

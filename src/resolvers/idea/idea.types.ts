@@ -6,7 +6,10 @@ export class ArgumentationType {
   question: string;
 
   @Field({ nullable: true })
-  answer: number;
+  answer: string;
+
+  @Field({ nullable: true })
+  rating: string;
 }
 
 @ObjectType()
@@ -17,7 +20,7 @@ export class IdeaType {
   @Field()
   email: string;
 
-  @Field({ nullable: true })
+  @Field()
   name: string;
 
   @Field()
@@ -28,4 +31,7 @@ export class IdeaType {
 
   @Field(() => ArgumentationType, { nullable: true })
   argumentation: ArgumentationType;
+
+  @Field({ nullable: true })
+  roadmap: string;
 }

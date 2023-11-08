@@ -6,6 +6,10 @@ const IdeaModel: Schema = new Schema<IIdea>({
     type: String,
     required: true,
   },
+  problem: {
+    type: String,
+    required: true,
+  },
   idea: {
     type: String,
     required: true,
@@ -17,7 +21,15 @@ const IdeaModel: Schema = new Schema<IIdea>({
   argumentation: {
     type: Object,
     required: false,
-    default: {},
+    default: {
+      // question: "",
+      // answer: "",
+      // rating: "",
+    },
+  },
+  roadmap: {
+    type: String,
+    required: false,
   },
 });
 

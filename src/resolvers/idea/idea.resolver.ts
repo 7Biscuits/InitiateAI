@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { IdeaType } from "./idea.types";
-import { execute } from "../../helpers/ai/llm";
+import { generateFQ } from "../../helpers/ai/llm";
 import { feedbackPrompt } from "../../helpers/ai/prompts/feedback";
 import Idea from "../../models/Idea";
 import User from "../../models/User";
@@ -20,17 +20,68 @@ export class IdeaResolver {
   @Mutation(() => IdeaType)
   async createIdea(
     @Arg("email") email: string,
+    @Arg("problem") problem: string,
     @Arg("idea") idea: string
   ): Promise<IdeaType> {
     const user: any = await User.findOne({ email: email });
-    const feedback: string = await execute(idea, user.name, feedbackPrompt);
+    const feedback: string = await generateFQ(
+      problem,
+      idea,
+      user.name,
+      feedbackPrompt
+    );
     const IdeaObject: any = new Idea({
       email: email,
       name: user.name,
+      problem: problem,
       idea: idea,
       feedback: feedback,
     });
+
     return await IdeaObject.save();
+  }
+
+  @Mutation(() => IdeaType)
+  async createIdeaManually(
+    @Arg("email") email: string,
+    @Arg("problem") problem: string,
+    @Arg("idea") idea: string,
+    @Arg("feedback") feedback: string,
+    @Arg("question") question: string,
+    @Arg("answer") answer: string,
+    @Arg("rating") rating: string,
+    @Arg("roadmap") roadmap: string
+  ): Promise<IdeaType> {
+    const user: any = await User.findOne({ email: email });
+    const IdeaObject: any = new Idea({
+      email: email,
+      name: user.name,
+      problem: problem,
+      idea: idea,
+      feedback: feedback,
+      argumentation: {
+        question: question,
+        answer: answer,
+        rating: rating,
+      },
+      roadmap: roadmap,
+    });
+
+    return await IdeaObject.save();
+  }
+
+  @Mutation(() => IdeaType)
+  async editIdeaManually(
+    @Arg("_id") _id: string,
+    @Arg("question") question: string,
+    @Arg("answer") answer: string,
+    @Arg("rating") rating: string
+  ): Promise<any> {
+    await Idea.findByIdAndUpdate(_id, {
+      argumentation: { question: question, answer: answer, rating: rating },
+    });
+    const idea: any = await Idea.findById(_id);
+    return idea;
   }
 
   @Mutation(() => String)
@@ -38,7 +89,7 @@ export class IdeaResolver {
     const idea: any = await Idea.findById(_id);
     if (!idea) return `Idea with id ${_id} was not found.`;
     Idea.deleteOne(idea);
-    return "Idea deleted successfully";
+    return "Idea deleted successfully.";
   }
 
   @Mutation(() => String)

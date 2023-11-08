@@ -4,8 +4,9 @@
 # -----------------------------------------------
 
 type ArgumentationType {
-  answer: Float
+  answer: String
   question: String
+  rating: String
 }
 
 type IdeaType {
@@ -14,16 +15,19 @@ type IdeaType {
   email: String!
   feedback: String!
   idea: String!
-  name: String
+  name: String!
+  roadmap: String
 }
 
 type Mutation {
   answerQuestion(answer: String!, idea_id: String!): QuestionType!
-  createIdea(email: String!, idea: String!): IdeaType!
+  createIdea(email: String!, idea: String!, problem: String!): IdeaType!
+  createIdeaManually(answer: String!, email: String!, feedback: String!, idea: String!, problem: String!, question: String!, rating: String!, roadmap: String!): IdeaType!
   deleteIdea(_id: String!): String!
   deleteIdeas(email: String!): String!
   deleteUserByEmail(email: String!): String!
   deleteUserById(_id: String!): String!
+  editIdeaManually(_id: String!, answer: String!, question: String!, rating: String!): IdeaType!
 }
 
 type Query {
@@ -31,6 +35,7 @@ type Query {
   getAllUsers: [UserType!]!
   getIdea(_id: String!): IdeaType
   getQuestion(idea_id: String!): QuestionType!
+  getRoadmap(idea_id: String!): RoadmapType!
   getUserByEmail(email: String!): UserType
   getUserById(_id: String!): UserType
 }
@@ -41,6 +46,10 @@ type QuestionType {
   name: String!
   question: String!
   rating: String!
+}
+
+type RoadmapType {
+  roadmap: String!
 }
 
 type UserType {

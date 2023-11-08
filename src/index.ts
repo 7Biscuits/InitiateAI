@@ -10,6 +10,7 @@ import cors from "cors";
 import { UserResolver } from "./resolvers/user/user.resolver";
 import { IdeaResolver } from "./resolvers/idea/idea.resolver";
 import { QuestionResolver } from "./resolvers/question/question.resolver";
+import { RoadmapResolver } from "./resolvers/roadmap/roadmap.resolver";
 import { router } from "./router";
 import { configDotenv } from "dotenv";
 
@@ -46,11 +47,17 @@ async function startServer() {
   app.use(express.json());
 
   const schema: any = await buildSchema({
-    resolvers: [UserResolver, IdeaResolver, QuestionResolver],
+    resolvers: [UserResolver, IdeaResolver, QuestionResolver, RoadmapResolver],
     emitSchemaFile: true,
   });
 
-  const server: ApolloServer = new ApolloServer({ schema });
+  const server: ApolloServer = new ApolloServer({
+    schema,
+    context: ({ req, res }) => ({
+      req,
+      res,
+    }),
+  });
   await server.start();
   server.applyMiddleware({ app });
 

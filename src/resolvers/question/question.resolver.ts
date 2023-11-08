@@ -4,7 +4,7 @@ import { questionPrompt } from "../../helpers/ai/prompts/question";
 import { checkAnswerPrompt } from "../../helpers/ai/prompts/answer";
 import Idea from "../../models/Idea";
 import User from "../../models/User";
-import { execute, checkAnswer } from "../../helpers/ai/llm";
+import { generateFQ, checkAnswer } from "../../helpers/ai/llm";
 
 @Resolver()
 export class QuestionResolver {
@@ -12,18 +12,19 @@ export class QuestionResolver {
   async getQuestion(@Arg("idea_id") _id: string): Promise<QuestionType> {
     const idea: any = await Idea.findById(_id);
     const user: any = await User.findOne({ email: idea.email });
-    const question: string = await execute(
+    const question: string = await generateFQ(
+      idea.problem,
       idea.idea,
       user.name,
       questionPrompt
     );
     idea.argumentation.question = question;
-    idea.save();
+    await idea.save();
     return {
       question: question,
       idea: idea.idea,
-      name: user.name
-    }
+      name: user.name,
+    };
   }
 
   @Mutation(() => QuestionType)
@@ -33,10 +34,21 @@ export class QuestionResolver {
   ): Promise<QuestionType> {
     const idea: any = await Idea.findById(_id);
     const user: any = await User.findOne({ email: idea.email });
-    const question: string = await idea.argumentation.question;
-    const rating: string = await checkAnswer(idea.idea, question, answer, user.name, checkAnswerPrompt);
-    idea.argumentation.answer = answer;
-    idea.argumentation.rating = rating;
+    const question: string = idea.argumentation.question;
+    console.log(question);
+    const rating: string = await checkAnswer(
+      idea.idea,
+      question,
+      answer,
+      user.name,
+      checkAnswerPrompt
+    );
+    // idea.argumentation.answer = answer;
+    // idea.argumentation.rating = rating;
+    // idea.save();
+    await Idea.findOneAndUpdate(idea, {
+      argumentation: { answer: answer, rating: rating },
+    });
     return {
       idea: idea.idea,
       question: question,

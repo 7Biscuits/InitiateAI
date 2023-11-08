@@ -18,13 +18,13 @@ googleCallback.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   async function (req, res) {
-    const rawUser = req.user as any;
-    handleCallback(
-      res,
-      rawUser.emails[0].value,
-      rawUser.id,
-      rawUser.displayName
-    );
+    const user = req.user as any;
+    res.cookie("email", user.emails[0].value, {
+      maxAge: 600000,
+      secure: true,
+      sameSite: false,
+    });
+    handleCallback(res, user.emails[0].value, user.id, user.displayName);
   }
 );
 
