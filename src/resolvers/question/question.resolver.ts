@@ -18,8 +18,15 @@ export class QuestionResolver {
       user.name,
       questionPrompt
     );
-    idea.argumentation.question = question;
-    await idea.save();
+    await Idea.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          "argumentation.question": question,
+        },
+      },
+      { new: true }
+    );
     return {
       question: question,
       idea: idea.idea,
@@ -43,12 +50,17 @@ export class QuestionResolver {
       user.name,
       checkAnswerPrompt
     );
-    // idea.argumentation.answer = answer;
-    // idea.argumentation.rating = rating;
-    // idea.save();
-    await Idea.findOneAndUpdate(idea, {
-      argumentation: { answer: answer, rating: rating },
-    });
+
+    await Idea.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          "argumentation.answer": answer,
+          "argumentation.rating": rating,
+        },
+      },
+      { new: true }
+    );
     return {
       idea: idea.idea,
       question: question,

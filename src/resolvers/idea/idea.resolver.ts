@@ -77,11 +77,18 @@ export class IdeaResolver {
     @Arg("answer") answer: string,
     @Arg("rating") rating: string
   ): Promise<any> {
-    await Idea.findByIdAndUpdate(_id, {
-      argumentation: { question: question, answer: answer, rating: rating },
-    });
-    const idea: any = await Idea.findById(_id);
-    return idea;
+    await Idea.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          "argumentation.answer": answer,
+          "argumentation.rating": rating,
+          "argumentation.question": question,
+        },
+      },
+      { new: true }
+    );
+    return await Idea.findById(_id);
   }
 
   @Mutation(() => String)

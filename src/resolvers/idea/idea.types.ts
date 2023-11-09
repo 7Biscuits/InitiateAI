@@ -3,19 +3,22 @@ import { ObjectType, Field, ID } from "type-graphql";
 @ObjectType()
 export class ArgumentationType {
   @Field({ nullable: true })
-  question: string;
+  question?: string;
 
   @Field({ nullable: true })
-  answer: string;
+  answer?: string;
 
   @Field({ nullable: true })
-  rating: string;
+  rating?: string;
 }
 
 @ObjectType()
 export class IdeaType {
   @Field(() => ID)
   _id: string;
+
+  @Field()
+  problem: string;
 
   @Field()
   email: string;
@@ -33,5 +36,5 @@ export class IdeaType {
   argumentation: ArgumentationType;
 
   @Field({ nullable: true })
-  roadmap: string;
+  roadmap?: string;
 }

@@ -22,9 +22,7 @@ const IdeaModel: Schema = new Schema<IIdea>({
     type: Object,
     required: false,
     default: {
-      // question: "",
-      // answer: "",
-      // rating: "",
+
     },
   },
   roadmap: {

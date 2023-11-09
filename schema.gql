@@ -16,6 +16,7 @@ type IdeaType {
   feedback: String!
   idea: String!
   name: String!
+  problem: String!
   roadmap: String
 }
 
